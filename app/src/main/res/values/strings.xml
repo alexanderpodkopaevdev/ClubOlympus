@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Club Olympus</string>
+    <string name="first_name">Имя</string>
+    <string name="last_name">Фамилия</string>
+    <string name="gender">Пол</string>
+    <string name="group">Группа</string>
 </resources>
