@@ -32,7 +32,7 @@ class OlympusContentProvider : ContentProvider() {
         sortOrder: String?
     ): Cursor? {
         val db = dbHelper.readableDatabase
-        return when (sUriMatcher.match(uri)) {
+        val cursor = when (sUriMatcher.match(uri)) {
             MEMBERS -> {
                 db.query(
                     MemberEntry.TABLE_NAME,
@@ -61,17 +61,20 @@ class OlympusContentProvider : ContentProvider() {
                 throw IllegalArgumentException("Can't query incorrect URI $uri")
             }
         }
+        cursor.setNotificationUri(context.contentResolver,uri)
+        return cursor
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         val db = dbHelper.writableDatabase
-        return when (sUriMatcher.match(uri)) {
+        when (sUriMatcher.match(uri)) {
             MEMBERS -> {
                 val id = db.insert(MemberEntry.TABLE_NAME, null, values)
                 if (id == (-1).toLong()) {
                     Log.e("insertMethod", "Insertion of data in the table failed for $uri")
                     return null
                 }
+                context.contentResolver.notifyChange(uri,null)
                 return ContentUris.withAppendedId(uri, id)
             }
             else -> {
@@ -88,7 +91,7 @@ class OlympusContentProvider : ContentProvider() {
         selectionArgs: Array<String>?
     ): Int {
         val db = dbHelper.writableDatabase
-        return when (sUriMatcher.match(uri)) {
+        val count=  when (sUriMatcher.match(uri)) {
             MEMBERS -> {
                 db.update(
                     MemberEntry.TABLE_NAME,
@@ -111,11 +114,15 @@ class OlympusContentProvider : ContentProvider() {
                 throw IllegalArgumentException("Can't update URI $uri")
             }
         }
+        if (count !=0 ) {
+            context.contentResolver.notifyChange(uri, null)
+        }
+        return count
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
         val db = dbHelper.writableDatabase
-        return when (sUriMatcher.match(uri)) {
+        val count = when (sUriMatcher.match(uri)) {
             MEMBERS -> {
                 db.delete(
                     MemberEntry.TABLE_NAME,
@@ -136,6 +143,10 @@ class OlympusContentProvider : ContentProvider() {
                 throw IllegalArgumentException("Can't delete URI $uri")
             }
         }
+        if (count !=0 ) {
+            context.contentResolver.notifyChange(uri, null)
+        }
+        return count
     }
 
     override fun getType(uri: Uri): String? {

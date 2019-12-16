@@ -1,6 +1,6 @@
 package com.example.clubolympus
 
-import android.content.ContentResolver
+
 import android.content.ContentValues
 import android.os.Bundle
 import android.view.Menu
@@ -41,7 +41,7 @@ class AddMemberActivity : AppCompatActivity() {
                 position: Int,
                 id: Long
             ) {
-                var genderStr = parent?.getItemAtPosition(position) as String
+                val genderStr = parent?.getItemAtPosition(position) as String
                 gender = when (genderStr) {
                     getString(R.string.male) -> MemberEntry.GENDER_MALE
                     getString(R.string.female) -> MemberEntry.GENDER_FEMALE
