@@ -1,5 +1,7 @@
 package com.example.clubolympus.data
 
+import android.net.Uri
+
 class ClubOlympusContract {
 
     private constructor()
@@ -7,8 +9,14 @@ class ClubOlympusContract {
     companion object{
         const val DB_NAME = "olympus"
         const val DB_VERSION = 1
+
+        const val SHEME = "content://"
         const val AUTHORITY = "com.example.clubolympus"
         const val PATH_MEMBERS = "members"
+
+        val BASE_CONTENT_URI = Uri.parse(SHEME + AUTHORITY)
+
+
 
     }
 
@@ -24,6 +32,8 @@ class ClubOlympusContract {
             const val GENDER_UNKNOWN = 0
             const val GENDER_MALE = 1
             const val GENDER_FEMALE = 2
+
+            val CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_MEMBERS)
 
 
         }

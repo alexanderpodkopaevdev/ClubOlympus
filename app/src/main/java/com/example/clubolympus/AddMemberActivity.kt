@@ -1,11 +1,14 @@
 package com.example.clubolympus
 
+import android.content.ContentResolver
+import android.content.ContentValues
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import com.example.clubolympus.data.ClubOlympusContract.MemberEntry
@@ -57,6 +60,7 @@ class AddMemberActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menuSaveMember -> {
+                insertMember()
                 return true
             }
             R.id.menuDeleteMember -> {
@@ -68,5 +72,23 @@ class AddMemberActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    fun insertMember() {
+        val contentValues = ContentValues().apply {
+            put(MemberEntry.COLUMN_FIRST_NAME,etFirstName.text.toString().trim())
+            put(MemberEntry.COLUMN_LAST_NAME,etLastName.text.toString().trim())
+            put(MemberEntry.COLUMN_GENDER,gender)
+            put(MemberEntry.COLUMN_SPORT_GROUP,etGroup.text.toString().trim())
+        }
+
+        if (contentResolver.insert(MemberEntry.CONTENT_URI,contentValues)!= null) {
+            Toast.makeText(this,"Saved data",Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this,"Insertion of data in the table failed",Toast.LENGTH_SHORT).show()
+
+        }
+
     }
 }
