@@ -12,7 +12,7 @@ class OlympusDBHelper(context: Context?) :
                 "${MemberEntry.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "${MemberEntry.COLUMN_FIRST_NAME} text, " +
                 "${MemberEntry.COLUMN_LAST_NAME} text, " +
-                "${MemberEntry.COLUMN_GENDER} INTEGER NOTNULL," +
+                "${MemberEntry.COLUMN_GENDER} INTEGER NOT NULL," +
                 "${MemberEntry.COLUMN_SPORT_GROUP} text)")
 
     }

@@ -7,6 +7,9 @@ class ClubOlympusContract {
     companion object{
         const val DB_NAME = "olympus"
         const val DB_VERSION = 1
+        const val AUTHORITY = "com.example.clubolympus"
+        const val PATH_MEMBERS = "members"
+
     }
 
     class MemberEntry{
