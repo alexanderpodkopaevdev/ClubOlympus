@@ -67,12 +67,12 @@ class OlympusContentProvider : ContentProvider() {
         val db = dbHelper.writableDatabase
         return when (sUriMatcher.match(uri)) {
             MEMBERS -> {
-                val id = db.insert(MemberEntry.TABLE_NAME,null,values)
+                val id = db.insert(MemberEntry.TABLE_NAME, null, values)
                 if (id == (-1).toLong()) {
                     Log.e("insertMethod", "Insertion of data in the table failed for $uri")
                     return null
                 }
-                return ContentUris.withAppendedId(uri,id)
+                return ContentUris.withAppendedId(uri, id)
             }
             else -> {
                 throw IllegalArgumentException("Insertion of data in the table failed for $uri")
@@ -87,14 +87,62 @@ class OlympusContentProvider : ContentProvider() {
         selection: String?,
         selectionArgs: Array<String>?
     ): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val db = dbHelper.writableDatabase
+        return when (sUriMatcher.match(uri)) {
+            MEMBERS -> {
+                db.update(
+                    MemberEntry.TABLE_NAME,
+                    values,
+                    selection,
+                    selectionArgs
+                )
+            }
+            MEMBER_ID -> {
+                val selection = "${MemberEntry.COLUMN_ID}=?"
+                val selectionArgs = arrayOf(ContentUris.parseId(uri).toString())
+                db.update(
+                    MemberEntry.TABLE_NAME,
+                    values,
+                    selection,
+                    selectionArgs
+                )
+            }
+            else -> {
+                throw IllegalArgumentException("Can't update URI $uri")
+            }
+        }
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val db = dbHelper.writableDatabase
+        return when (sUriMatcher.match(uri)) {
+            MEMBERS -> {
+                db.delete(
+                    MemberEntry.TABLE_NAME,
+                    selection,
+                    selectionArgs
+                )
+            }
+            MEMBER_ID -> {
+                val selection = "${MemberEntry.COLUMN_ID}=?"
+                val selectionArgs = arrayOf(ContentUris.parseId(uri).toString())
+                db.delete(
+                    MemberEntry.TABLE_NAME,
+                    selection,
+                    selectionArgs
+                )
+            }
+            else -> {
+                throw IllegalArgumentException("Can't delete URI $uri")
+            }
+        }
     }
 
     override fun getType(uri: Uri): String? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return when (sUriMatcher.match(uri)) {
+            MEMBERS -> MemberEntry.CONTENT_MULTIPLE_ITEMS
+            MEMBER_ID -> MemberEntry.CONTENT_SINGLE_ITEM
+            else -> throw IllegalArgumentException("Unknown URI $uri")
+        }
     }
 }
