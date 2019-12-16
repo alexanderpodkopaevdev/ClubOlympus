@@ -34,26 +34,8 @@ class MainActivity : AppCompatActivity() {
         )
 
         val cursor = contentResolver.query(MemberEntry.CONTENT_URI, projection, null, null, null)
-        tvData.text = "All members \n\n"
-        tvData.append(
-            "${MemberEntry.COLUMN_ID}, " +
-                    "${MemberEntry.COLUMN_FIRST_NAME}, " +
-                    "${MemberEntry.COLUMN_LAST_NAME}, " +
-                    "${MemberEntry.COLUMN_GENDER},  " +
-                    "${MemberEntry.COLUMN_SPORT_GROUP} \n\n"
-        )
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                tvData.append(cursor.getInt(cursor.getColumnIndex(MemberEntry.COLUMN_ID)).toString())
-                tvData.append(cursor.getString(cursor.getColumnIndex(MemberEntry.COLUMN_FIRST_NAME)))
-                tvData.append(cursor.getString(cursor.getColumnIndex(MemberEntry.COLUMN_LAST_NAME)))
-                tvData.append(cursor.getInt(cursor.getColumnIndex(MemberEntry.COLUMN_GENDER)).toString())
-                tvData.append(cursor.getString(cursor.getColumnIndex(MemberEntry.COLUMN_SPORT_GROUP)))
-                tvData.append("\n")
-            }
-        }
-        cursor.close()
+        val membersCursorAdapter = MemberCursorAdapter(this,cursor)
+        listView.adapter = membersCursorAdapter
     }
 
 }

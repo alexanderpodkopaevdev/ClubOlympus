@@ -6,6 +6,7 @@
     <string name="group">Группа</string>
     <string name="male">Мужчина</string>
     <string name="female">Женщина</string>
+    <string name="non_gender">Пол не указан</string>
     <string name="save">Сохранить</string>
     <string name="delete">Удалить</string>
 </resources>
