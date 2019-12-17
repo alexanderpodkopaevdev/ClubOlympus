@@ -5,17 +5,15 @@ import android.net.Uri
 
 class ClubOlympusContract {
 
-    private constructor()
-
     companion object{
         const val DB_NAME = "olympus"
-        const val DB_VERSION = 1
+        const val DB_VERSION = 2
 
-        const val SHEME = "content://"
+        private const val SCHEME = "content://"
         const val AUTHORITY = "com.example.clubolympus"
         const val PATH_MEMBERS = "members"
 
-        val BASE_CONTENT_URI = Uri.parse(SHEME + AUTHORITY)!!
+        val BASE_CONTENT_URI = Uri.parse(SCHEME + AUTHORITY)!!
 
 
 
@@ -30,9 +28,9 @@ class ClubOlympusContract {
             const val COLUMN_GENDER = "gender"
             const val COLUMN_SPORT_GROUP = "sportGroup"
 
-            const val GENDER_UNKNOWN = 0
-            const val GENDER_MALE = 1
-            const val GENDER_FEMALE = 2
+            const val GENDER_UNKNOWN = 2
+            const val GENDER_MALE = 0
+            const val GENDER_FEMALE = 1
 
             val CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_MEMBERS)!!
 

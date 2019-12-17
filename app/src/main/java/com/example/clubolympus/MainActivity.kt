@@ -1,5 +1,6 @@
 package com.example.clubolympus
 
+import android.content.ContentUris
 import android.content.Intent
 import android.database.Cursor
 import android.os.Bundle
@@ -11,8 +12,8 @@ import com.example.clubolympus.data.ClubOlympusContract.MemberEntry
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> {
-    lateinit var membersCursorAdapter: MemberCursorAdapter
-    val memberLoader = 123
+    private lateinit var membersCursorAdapter: MemberCursorAdapter
+    private val memberLoader = 123
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +24,12 @@ class MainActivity : AppCompatActivity(), LoaderManager.LoaderCallbacks<Cursor> 
         }
         membersCursorAdapter = MemberCursorAdapter(this, null)
         listView.adapter = membersCursorAdapter
+        listView.setOnItemClickListener { _, _, _, id ->
+            val intent = Intent(this@MainActivity,AddMemberActivity::class.java)
+            val currentUri = ContentUris.withAppendedId(MemberEntry.CONTENT_URI,id)
+            intent.data = currentUri
+            startActivity(intent)
+        }
 
         LoaderManager.getInstance(this).initLoader(memberLoader,null,this)
 
